@@ -9,8 +9,6 @@ namespace SinglePlayer.Scripts.Movement
         private const string HorizontalAxis = "Horizontal";
         private const string VerticalAxis = "Vertical";
 
-        [SerializeField] private float Speed = 30f;
-
         private protected void FixedUpdate()
         {
             MoveRelativeToInput();
@@ -23,8 +21,7 @@ namespace SinglePlayer.Scripts.Movement
         /// </summary>
         private void MoveRelativeToInput()
         {
-            Move((Input.GetAxisRaw(HorizontalAxis) * transform.right + Input.GetAxisRaw(VerticalAxis) * transform.up) *
-                 Speed);
+            Move((Input.GetAxisRaw(HorizontalAxis) * transform.right + Input.GetAxisRaw(VerticalAxis) * transform.up));
         }
     }
 }

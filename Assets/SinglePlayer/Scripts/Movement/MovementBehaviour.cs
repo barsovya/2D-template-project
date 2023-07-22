@@ -11,6 +11,8 @@ namespace SinglePlayer.Scripts.Movement
     {
         private Rigidbody2DLinkingContainer PhysicalRigidbody;
         public bool CanMove { get; private protected set; } = true;
+        
+        [SerializeField] private protected float Speed = 30f;
 
         public override void LinkingNecessaryComponents()
         {
@@ -27,7 +29,7 @@ namespace SinglePlayer.Scripts.Movement
         public virtual void Move(Vector2 velocity)
         {
             if (!CanMove) return;
-            PhysicalRigidbody.SetVelocity(velocity);
+            PhysicalRigidbody.SetVelocity(velocity * Speed);
         }
     }
 }
