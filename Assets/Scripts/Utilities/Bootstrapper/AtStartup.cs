@@ -19,14 +19,16 @@ namespace Utilities.Bootstrapper
         /// and subscribe to this component in 'Awake' or something else.
         /// Every component is not subscribed here, only the main modules of the systems.
         /// </summary>
-        public static Action InitializationStackHasBeenDeployed;
+        public Action InitializationStackHasBeenDeployed;
 
         private static List<IBootstrapComponent> BootstrapComponents = new List<IBootstrapComponent>();
-
+        
         /// <summary>
         /// The original implementation makes a call from main Bootstrapper.cs
         /// </summary>
         [SerializeField] private bool DebugInitializationAtStartScene = false;
+
+        private new static bool IsInitialized = false;
 
         private protected void Start()
         {
@@ -37,6 +39,12 @@ namespace Utilities.Bootstrapper
             }
         }
 
+        private void OnDestroy()
+        {
+            BootstrapComponents.Clear();
+            IsInitialized = false;
+        }
+        
         /// <summary>
         /// Caching of components at needed.
         /// </summary>
@@ -58,12 +66,16 @@ namespace Utilities.Bootstrapper
             {
                 bootstrapComponent.Initialization();
             }
-
+           
             InitializationStackHasBeenDeployed?.Invoke();
+            IsInitialized = true;
         }
 
         public static void AddToInitializationOrder(IBootstrapComponent bootstrapComponent)
         {
+            if (IsInitialized)
+                throw new FieldAccessException();
+
             if (bootstrapComponent.BootstrapPriority)
             {
                 BootstrapComponents.Insert(0, bootstrapComponent);
@@ -72,7 +84,7 @@ namespace Utilities.Bootstrapper
 
             BootstrapComponents.Add(bootstrapComponent);
         }
-
+        
         /// <summary>
         /// We load all the complex elements immediately after loading the scene,
         /// and then clear the buffer.

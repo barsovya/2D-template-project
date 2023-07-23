@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SinglePlayer.Scripts.Controllers;
+using SinglePlayer.Scripts.Spawner;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,18 +18,14 @@ namespace SinglePlayer.Scripts
         [SerializeField] private TextMeshProUGUI Lives;
         [SerializeField] private PlayerController PlayerController;
         [SerializeField] private GameObject FinishPanel;
-        [SerializeField] private List<EnemyController> EnemyControllers = new List<EnemyController>();
+        [SerializeField] private EnemySpawner EnemySpawner;
 
-        private void Start()
+        private void Awake()
         {
             PlayerController.LivesChanged += ((lives) => Lives.text = lives.ToString());
             PlayerController.LivesChanged += OnLivesChanged;
 
-            foreach (var enemy in EnemyControllers)
-            {
-                enemy.Initialization();
-                enemy.ThrowWeapon.TookAttack += PlayerWasDamaged;
-            }
+            EnemySpawner.EnemyWasCreated += (enemy) => enemy.ThrowWeapon.TookAttack += PlayerWasDamaged;
         }
 
         private void OnLivesChanged(int lives)
@@ -50,7 +47,7 @@ namespace SinglePlayer.Scripts
 
         public void Reset()
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
         }
     }
 }

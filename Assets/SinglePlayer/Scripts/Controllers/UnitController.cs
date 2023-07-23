@@ -1,16 +1,13 @@
 using System;
 using SinglePlayer.Scripts.Damage;
 using UnityEngine;
-using Utilities.Bootstrapper;
 using Utilities.Interfaces;
 
 namespace SinglePlayer.Scripts.Controllers
 {
     [Serializable]
-    public abstract class UnitController : LinkingBehavior, IBootstrapComponent
+    public abstract class UnitController : LinkingBehavior
     {
-        public bool BootstrapPriority { get; private set; } = false;
-
         public Action<int> LivesChanged;
 
         [SerializeField] private int lives = 1;
@@ -26,11 +23,6 @@ namespace SinglePlayer.Scripts.Controllers
         }
 
         private DamageDealer DamageDealer = new DamageDealer();
-
-        private protected virtual void Awake()
-        {
-            AtStartup.AddToInitializationOrder(this);
-        }
 
         public override void LinkingNecessaryComponents()
         {
