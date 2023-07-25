@@ -9,4 +9,5 @@ Includes examples:
 - A simple hierarchy of dependencies that is suitable for any PVP shooters, with different types of weapons.
 - Working with C# extensions.
 - The single responsibility of modules, and the presence of the correct contracts, presented in interfaces and abstract classes.
+- Implementing a simple factory template.
 - Antipattern 'Game Manager' (due to the lack of DI, as well as a bunch of other related modules), writing a complete architecture would be time-consuming, but you will find something new for yourself in the approaches described above.
